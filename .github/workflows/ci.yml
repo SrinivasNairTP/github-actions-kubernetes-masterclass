@@ -47,6 +47,7 @@ jobs:
         uses: gitleaks/gitleaks-action@v2
 
 
+
       #Docker Build Optimization
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -86,7 +87,7 @@ jobs:
           severity: 'CRITICAL,HIGH'
 
   frontend:
-    needs: changes
+    needs: backend
 
     # if: needs.changes.outputs.frontend == 'true'
 
