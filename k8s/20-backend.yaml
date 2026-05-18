@@ -14,6 +14,7 @@ spec:
     - name: http
       port: 8080
       targetPort: 8080
+
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -25,55 +26,65 @@ spec:
   selector:
     matchLabels:
       app: backend
+
   template:
     metadata:
       labels:
         app: backend
+
     spec:
+      # initContainers:
+      #   - name: wait-for-mysql
+      #     image: busybox:1.36
+      #     command:
+      #       - sh
+      #       - -c
+      #       - |
+      #         echo "Waiting for MySQL...";
+      #         until nc -z mysql 3306; do
+      #           sleep 2;
+      #         done;
+      #         echo "MySQL is up!";
+
       containers:
         - name: backend
           image: trainwithshubham/skillpulse-backend:latest
           imagePullPolicy: IfNotPresent
+
           ports:
-            - name: http
-              containerPort: 8080
+            - containerPort: 8080
+
           env:
             - name: DB_HOST
               value: mysql
+
             - name: DB_PORT
               value: "3306"
+
             - name: PORT
               value: "8080"
+
             - name: DB_USER
               valueFrom:
                 secretKeyRef:
                   name: skillpulse-db
                   key: MYSQL_USER
+
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: skillpulse-db
                   key: MYSQL_PASSWORD
+
             - name: DB_NAME
               valueFrom:
                 secretKeyRef:
                   name: skillpulse-db
                   key: MYSQL_DATABASE
+
           resources:
             requests:
-              cpu: 100m
-              memory: 64Mi
-            limits:
+              cpu: 250m
               memory: 128Mi
-          livenessProbe:
-            httpGet:
-              path: /health
-              port: 8080
-            initialDelaySeconds: 15
-            periodSeconds: 10
-          readinessProbe:
-            httpGet:
-              path: /health
-              port: 8080
-            initialDelaySeconds: 5
-            periodSeconds: 5
+            limits:
+              memory: 256Mi

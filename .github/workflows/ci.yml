@@ -87,7 +87,7 @@ jobs:
           severity: 'CRITICAL,HIGH'
 
   frontend:
-    needs: backend
+    needs: changes
 
     # if: needs.changes.outputs.frontend == 'true'
 

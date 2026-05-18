@@ -1,19 +1,22 @@
-# Stage 1: Build
-FROM golang:1.26-alpine AS builder
+FROM golang:1.25-alpine AS builder
 
 WORKDIR /app
 
+RUN apk add --no-cache ca-certificates
+
 COPY . .
-RUN go mod tidy && CGO_ENABLED=0 GOOS=linux go build -o skillpulse .
 
-# Stage 2: Run
-FROM alpine:3.23
+RUN go mod tidy
 
-RUN apk --no-cache add ca-certificates
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
+    go build -ldflags="-s -w -extldflags '-static'" -o skillpulse .
+
+FROM scratch
 
 WORKDIR /app
 
 COPY --from=builder /app/skillpulse .
+COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 
 EXPOSE 8080
 
