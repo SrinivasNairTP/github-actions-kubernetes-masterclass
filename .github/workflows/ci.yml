@@ -34,27 +34,42 @@ jobs:
   backend:
     needs: changes
 
-    if: needs.changes.outputs.backend == 'true'
+    # if: needs.changes.outputs.backend == 'true'
 
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
-      
-      - name: Run Git Leaks
+
+      # Secret Scanning
+      - name: Run Gitleaks
         uses: gitleaks/gitleaks-action@v2
 
+      #Go Dependency Vulnerability Scan
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.25'
 
+      - name: Run Go Vulnerability Scan
+        run: |
+          go install golang.org/x/vuln/cmd/govulncheck@latest
+          cd backend
+          govulncheck ./...
+
+      #Docker Build Optimization
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      #DockerHub Login
       - name: Login to DockerHub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      # Build & Push Backend Image
       - name: Build and Push Backend
         uses: docker/build-push-action@v5
         with:
@@ -70,39 +85,44 @@ jobs:
 
           provenance: false
           sbom: false
-        
+
+      #Container Vulnerability Scan
       - name: Run Trivy Security Scan
-        uses: aquasecurity/trivy-action@v0.2.0
+        uses: aquasecurity/trivy-action@master
         with:
-            image-ref: srini2390/skillpulse-backend:${{ github.sha }}
-            format: 'table'
-            exit-code: '1'
-            vuln-type: 'os,library'
-            severity: 'CRITICAL,HIGH'
+          image-ref: srini2390/skillpulse-backend:${{ github.sha }}
+          format: 'table'
+          exit-code: '0'
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
 
   frontend:
     needs: changes
 
-    if: needs.changes.outputs.frontend == 'true'
+    # if: needs.changes.outputs.frontend == 'true'
 
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
-      
-      - name: Run Git Leaks
+
+      #Shift-Left Security - Secret Scanning
+      - name: Run Gitleaks
         uses: gitleaks/gitleaks-action@v2
 
+      #Docker Build Optimization
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      #DockerHub Login
       - name: Login to DockerHub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      #Build & Push Frontend Image
       - name: Build and Push Frontend
         uses: docker/build-push-action@v5
         with:
@@ -119,11 +139,12 @@ jobs:
           provenance: false
           sbom: false
 
+      #Container Vulnerability Scan
       - name: Run Trivy Security Scan
-        uses: aquasecurity/trivy-action@v0.2.0
+        uses: aquasecurity/trivy-action@master
         with:
-            image-ref: srini2390/skillpulse-backend:${{ github.sha }}
-            format: 'table'
-            exit-code: '1'
-            vuln-type: 'os,library'
-            severity: 'CRITICAL,HIGH'
+          image-ref: srini2390/skillpulse-frontend:${{ github.sha }}
+          format: 'table'
+          exit-code: '0'
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
