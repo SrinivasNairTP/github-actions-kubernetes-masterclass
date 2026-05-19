@@ -45,4 +45,3 @@ build/
 
 # Logs
 *.log
-*.terraform.log
