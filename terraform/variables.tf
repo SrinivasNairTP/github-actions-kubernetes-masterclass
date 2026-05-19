@@ -1,5 +1,5 @@
 variable "cluster_name" {
   description = "EKS Cluster Name"
   type        = string
-  default     = "skillpulse-cluster-v2"
+  default     = "skillpulse-cluster-v3"
 }
