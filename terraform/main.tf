@@ -51,9 +51,9 @@ module "eks" {
 }
 
 resource "aws_ecr_repository" "backend" {
-  name = "skillpulse-backend-v2"
+  name = "skillpulse-backend-v3"
 }
 
 resource "aws_ecr_repository" "frontend" {
-  name = "skillpulse-frontend-v2"
+  name = "skillpulse-frontend-v3"
 }
