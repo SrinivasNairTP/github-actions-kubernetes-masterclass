@@ -153,3 +153,5 @@ jobs:
           exit-code: '1'
           vuln-type: 'os,library'
           severity: 'CRITICAL'
+          # Removed invalid input 'ignorefile' (not supported by aquasecurity/trivy-action)
+          trivyignores: '.trivyignore'
