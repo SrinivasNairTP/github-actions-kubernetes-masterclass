@@ -1,5 +1,4 @@
-FROM --platform=linux/amd64 nginx:1.23-alpine
-
+FROM --platform=linux/amd64 nginx:1.27-alpine
 # Remove default nginx content
 RUN rm -rf /usr/share/nginx/html/*
 
