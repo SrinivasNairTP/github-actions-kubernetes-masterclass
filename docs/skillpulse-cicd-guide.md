@@ -54,9 +54,9 @@ Once you have built this once, you understand 80% of what every modern engineeri
 
 ## Why this matters
 
-Three reasons.
+Three reasons
 
-**1. Hiring signal.** Every DevOps, SRE, Cloud Engineer, or Platform Engineer job posting asks for some combination of: "experience with CI/CD pipelines," "Docker," "GitHub Actions / Jenkins / GitLab CI," "cloud deployment." This project hits all of them — visibly, on GitHub, with commit history that tells the story.
+**1. Hiring signal.** Every DevOps, SRE, Cloud Engineer, or Platform Engineer job posting asks for some combination of: "experience with CI/CD pipelines," "Docker," "GitHub Actions / Jenkins / GitLab CI," "cloud deployment." This project hits all of them — visibly, on GitHub, with commit history that tells the story
 
 **2. Foundation.** Kubernetes, GitOps, service meshes, observability — they all sit on top of CI/CD. You cannot meaningfully learn the next layer until this one is intuitive.
 
