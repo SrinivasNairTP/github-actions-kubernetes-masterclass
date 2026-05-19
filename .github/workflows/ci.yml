@@ -5,7 +5,16 @@ on:
     branches:
       - main
 
+    paths:
+      - 'backend/**'
+      - 'frontend/**'
+      - '.github/workflows/ci.yml'
+
   workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
 
 jobs:
 
@@ -21,8 +30,8 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Detect Changes
-        uses: dorny/paths-filter@v3
         id: filter
+        uses: dorny/paths-filter@v3
         with:
           filters: |
             backend:
@@ -34,7 +43,7 @@ jobs:
   backend:
     needs: changes
 
-    # if: needs.changes.outputs.backend == 'true'
+    if: needs.changes.outputs.backend == 'true'
 
     runs-on: ubuntu-latest
 
@@ -46,18 +55,20 @@ jobs:
       - name: Run Gitleaks
         uses: gitleaks/gitleaks-action@v2
 
-
-
-      #Docker Build Optimization
+      # Docker Build Optimization
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      #DockerHub Login
-      - name: Login to DockerHub
-        uses: docker/login-action@v3
+      # Configure AWS Credentials using OIDC
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          role-to-assume: arn:aws:iam::163053485065:role/github-actions-role
+          aws-region: ap-south-1
+
+      # Login to Amazon ECR
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v2
 
       # Build & Push Backend Image
       - name: Build and Push Backend
@@ -67,8 +78,8 @@ jobs:
           push: true
 
           tags: |
-            srini2390/skillpulse-backend:latest
-            srini2390/skillpulse-backend:${{ github.sha }}
+            163053485065.dkr.ecr.ap-south-1.amazonaws.com/skillpulse-backend-v2:latest
+            163053485065.dkr.ecr.ap-south-1.amazonaws.com/skillpulse-backend-v2:${{ github.sha }}
 
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -76,20 +87,20 @@ jobs:
           provenance: false
           sbom: false
 
-      #Container Vulnerability Scan
+      # Container Vulnerability Scan
       - name: Run Trivy Security Scan
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: srini2390/skillpulse-backend:${{ github.sha }}
+          image-ref: 163053485065.dkr.ecr.ap-south-1.amazonaws.com/skillpulse-backend-v2:${{ github.sha }}
           format: 'table'
-          exit-code: '0'
+          exit-code: '1'
           vuln-type: 'os,library'
-          severity: 'CRITICAL,HIGH'
+          severity: 'CRITICAL'
 
   frontend:
     needs: changes
 
-    # if: needs.changes.outputs.frontend == 'true'
+    if: needs.changes.outputs.frontend == 'true'
 
     runs-on: ubuntu-latest
 
@@ -97,22 +108,26 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      #Shift-Left Security - Secret Scanning
+      # Secret Scanning
       - name: Run Gitleaks
         uses: gitleaks/gitleaks-action@v2
 
-      #Docker Build Optimization
+      # Docker Build Optimization
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      #DockerHub Login
-      - name: Login to DockerHub
-        uses: docker/login-action@v3
+      # Configure AWS Credentials using OIDC
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          role-to-assume: arn:aws:iam::163053485065:role/github-actions-role
+          aws-region: ap-south-1
 
-      #Build & Push Frontend Image
+      # Login to Amazon ECR
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v2
+
+      # Build & Push Frontend Image
       - name: Build and Push Frontend
         uses: docker/build-push-action@v5
         with:
@@ -120,8 +135,8 @@ jobs:
           push: true
 
           tags: |
-            srini2390/skillpulse-frontend:latest
-            srini2390/skillpulse-frontend:${{ github.sha }}
+            163053485065.dkr.ecr.ap-south-1.amazonaws.com/skillpulse-frontend-v2:latest
+            163053485065.dkr.ecr.ap-south-1.amazonaws.com/skillpulse-frontend-v2:${{ github.sha }}
 
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -129,12 +144,12 @@ jobs:
           provenance: false
           sbom: false
 
-      #Container Vulnerability Scan
+      # Container Vulnerability Scan
       - name: Run Trivy Security Scan
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: srini2390/skillpulse-frontend:${{ github.sha }}
+          image-ref: 163053485065.dkr.ecr.ap-south-1.amazonaws.com/skillpulse-frontend-v2:${{ github.sha }}
           format: 'table'
-          exit-code: '0'
+          exit-code: '1'
           vuln-type: 'os,library'
-          severity: 'CRITICAL,HIGH'
+          severity: 'CRITICAL'
