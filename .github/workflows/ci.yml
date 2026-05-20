@@ -135,7 +135,7 @@ jobs:
           push: true
 
           tags: |
-            163053485065.dkr.ecr.ap-south-1.amazonaws.com/skillpulse-frontend:latest
+            163053485065.dkr.ecr.ap-south-1.amazonaws.com/skillpulse-frontend:v2
             163053485065.dkr.ecr.ap-south-1.amazonaws.com/skillpulse-frontend:${{ github.sha }}
 
           cache-from: type=gha
