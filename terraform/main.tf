@@ -45,7 +45,7 @@ module "eks" {
       min_size     = 2
       max_size     = 4
 
-      instance_types = ["t3.micro"]
+      instance_types = ["t3.small"]
     }
   }
 }
