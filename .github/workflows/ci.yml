@@ -78,8 +78,8 @@ jobs:
           push: true
 
           tags: |
-            163053485065.dkr.ecr.ap-south-1.amazonaws.com/skillpulse-backend-v2:latest
-            163053485065.dkr.ecr.ap-south-1.amazonaws.com/skillpulse-backend-v2:${{ github.sha }}
+            163053485065.dkr.ecr.ap-south-1.amazonaws.com/skillpulse-backend:latest
+            163053485065.dkr.ecr.ap-south-1.amazonaws.com/skillpulse-backend:${{ github.sha }}
 
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -91,7 +91,7 @@ jobs:
       - name: Run Trivy Security Scan
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: 163053485065.dkr.ecr.ap-south-1.amazonaws.com/skillpulse-backend-v2:${{ github.sha }}
+          image-ref: 163053485065.dkr.ecr.ap-south-1.amazonaws.com/skillpulse-backend:${{ github.sha }}
           format: 'table'
           exit-code: '1'
           vuln-type: 'os,library'
@@ -135,8 +135,8 @@ jobs:
           push: true
 
           tags: |
-            163053485065.dkr.ecr.ap-south-1.amazonaws.com/skillpulse-frontend-v2:latest
-            163053485065.dkr.ecr.ap-south-1.amazonaws.com/skillpulse-frontend-v2:${{ github.sha }}
+            163053485065.dkr.ecr.ap-south-1.amazonaws.com/skillpulse-frontend:latest
+            163053485065.dkr.ecr.ap-south-1.amazonaws.com/skillpulse-frontend:${{ github.sha }}
 
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -148,7 +148,7 @@ jobs:
       - name: Run Trivy Security Scan
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: 163053485065.dkr.ecr.ap-south-1.amazonaws.com/skillpulse-frontend-v2:${{ github.sha }}
+          image-ref: 163053485065.dkr.ecr.ap-south-1.amazonaws.com/skillpulse-frontend:${{ github.sha }}
           format: 'table'
           exit-code: '1'
           vuln-type: 'os,library'
