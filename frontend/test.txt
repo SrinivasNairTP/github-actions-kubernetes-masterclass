@@ -2,3 +2,4 @@ test
 # rebuild
 # rebuild
 # rebuild again
+# rebuild again nginx

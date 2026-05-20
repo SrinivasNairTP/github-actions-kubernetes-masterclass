@@ -159,3 +159,22 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+env:
+  - name: DB_HOST
+    value: mysql.skillpulse.svc.cluster.local
+
+  - name: DB_PORT
+    value: "3306"
+
+  - name: DB_USER
+    value: skillpulse
+
+  - name: DB_PASSWORD
+    value: skillpulse123
+
+  - name: DB_NAME
+    value: skillpulse
+
+  - name: PORT
+    value: "8080"
