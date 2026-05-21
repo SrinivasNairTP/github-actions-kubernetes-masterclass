@@ -55,11 +55,11 @@ jobs:
       - name: Run Gitleaks
         uses: gitleaks/gitleaks-action@v2
 
-      # Docker Build Optimization
+      # Setup Docker Buildx
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      # Configure AWS Credentials using OIDC
+      # Configure AWS Credentials
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -87,15 +87,15 @@ jobs:
           provenance: false
           sbom: false
 
-      # Container Vulnerability Scan
+      # Vulnerability Scan
       - name: Run Trivy Security Scan
         uses: aquasecurity/trivy-action@master
         with:
           image-ref: 163053485065.dkr.ecr.ap-south-1.amazonaws.com/skillpulse-backend:${{ github.sha }}
-          format: 'table'
-          exit-code: '1'
-          vuln-type: 'os,library'
-          severity: 'CRITICAL'
+          format: table
+          exit-code: 1
+          vuln-type: os,library
+          severity: CRITICAL
 
   frontend:
     needs: changes
@@ -112,11 +112,11 @@ jobs:
       - name: Run Gitleaks
         uses: gitleaks/gitleaks-action@v2
 
-      # Docker Build Optimization
+      # Setup Docker Buildx
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      # Configure AWS Credentials using OIDC
+      # Configure AWS Credentials
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -135,7 +135,7 @@ jobs:
           push: true
 
           tags: |
-            163053485065.dkr.ecr.ap-south-1.amazonaws.com/skillpulse-frontend:v2
+            163053485065.dkr.ecr.ap-south-1.amazonaws.com/skillpulse-frontend:latest
             163053485065.dkr.ecr.ap-south-1.amazonaws.com/skillpulse-frontend:${{ github.sha }}
 
           cache-from: type=gha
@@ -144,14 +144,12 @@ jobs:
           provenance: false
           sbom: false
 
-      # Container Vulnerability Scan
+      # Vulnerability Scan
       - name: Run Trivy Security Scan
         uses: aquasecurity/trivy-action@master
         with:
           image-ref: 163053485065.dkr.ecr.ap-south-1.amazonaws.com/skillpulse-frontend:${{ github.sha }}
-          format: 'table'
-          exit-code: '1'
-          vuln-type: 'os,library'
-          severity: 'CRITICAL'
-          # Removed invalid input 'ignorefile' (not supported by aquasecurity/trivy-action)
-          trivyignores: '.trivyignore'
+          format: table
+          exit-code: 1
+          vuln-type: os,library
+          severity: CRITICAL
