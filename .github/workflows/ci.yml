@@ -5,10 +5,10 @@ on:
     branches:
       - main
 
-    paths:
-      - 'backend/**'
-      - 'frontend/**'
-      - '.github/workflows/ci.yml'
+    # paths:
+    #   - 'backend/**'
+    #   - 'frontend/**'
+    #   - '.github/workflows/ci.yml'
 
   workflow_dispatch:
 
@@ -41,7 +41,7 @@ jobs:
               - 'frontend/**'
 
   backend:
-    needs: changes
+    # needs: changes
 
    # if: needs.changes.outputs.backend == 'true'
 
@@ -98,7 +98,7 @@ jobs:
           severity: CRITICAL
 
   frontend:
-    needs: changes
+    # needs: changes
 
   #  if: needs.changes.outputs.frontend == 'true'
 
