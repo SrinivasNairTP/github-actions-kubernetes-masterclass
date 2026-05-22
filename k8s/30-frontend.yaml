@@ -43,9 +43,9 @@ spec:
       containers:
         - name: frontend
 
-          image: frontend:v1
+          image: srini2390/frontend:v1
 
-          imagePullPolicy: Never
+          imagePullPolicy: Always
 
           ports:
             - name: http
@@ -73,4 +73,4 @@ spec:
               port: 80
 
             initialDelaySeconds: 2
-            periodSeconds: 5
+            periodSeconds: 5 ̑

@@ -55,9 +55,9 @@ spec:
       containers:
         - name: backend
 
-          image: backend:v1
+          image: srini2390/backend:v1
 
-          imagePullPolicy: Never
+          imagePullPolicy: Always
 
           ports:
             - containerPort: 8080
