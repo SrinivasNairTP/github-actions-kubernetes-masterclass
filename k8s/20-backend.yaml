@@ -55,16 +55,16 @@ spec:
       containers:
         - name: backend
 
-          image: 163053485065.dkr.ecr.ap-south-1.amazonaws.com/skillpulse-backend:latest
+          image: backend:v1
 
-          imagePullPolicy: Always
+          imagePullPolicy: Never
 
           ports:
             - containerPort: 8080
 
           env:
             - name: DB_HOST
-              value: mysql.skillpulse.svc.cluster.local
+              value: mysql
 
             - name: DB_PORT
               value: "3306"

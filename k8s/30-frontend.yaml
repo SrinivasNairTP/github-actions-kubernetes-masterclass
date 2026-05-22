@@ -1,5 +1,6 @@
 apiVersion: v1
 kind: Service
+
 metadata:
   name: frontend
   namespace: skillpulse
@@ -7,7 +8,7 @@ metadata:
     app: frontend
 
 spec:
-  type: LoadBalancer
+  type: ClusterIP
 
   selector:
     app: frontend
@@ -21,6 +22,7 @@ spec:
 
 apiVersion: apps/v1
 kind: Deployment
+
 metadata:
   name: frontend
   namespace: skillpulse
@@ -41,9 +43,9 @@ spec:
       containers:
         - name: frontend
 
-          image: 163053485065.dkr.ecr.ap-south-1.amazonaws.com/skillpulse-frontend:latest
+          image: frontend:v1
 
-          imagePullPolicy: Always
+          imagePullPolicy: Never
 
           ports:
             - name: http
