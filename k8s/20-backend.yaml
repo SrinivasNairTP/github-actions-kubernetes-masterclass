@@ -55,7 +55,7 @@ spec:
       containers:
         - name: backend
 
-          image: srini2390/backend:v1
+          image: srini2390/skillpulse-backend:latest
 
           imagePullPolicy: Always
 

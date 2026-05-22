@@ -43,7 +43,7 @@ spec:
       containers:
         - name: frontend
 
-          image: srini2390/frontend:v1
+          image: srini2390/skillpulse-frontend:latest
 
           imagePullPolicy: Always
 
