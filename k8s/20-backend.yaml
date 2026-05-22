@@ -56,7 +56,6 @@ spec:
         - name: backend
 
           image: srini2390/skillpulse-backend:latest
-
           imagePullPolicy: Always
 
           ports:
