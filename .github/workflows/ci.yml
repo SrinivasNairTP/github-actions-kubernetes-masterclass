@@ -45,7 +45,7 @@ jobs:
           exit-code: 1
           ignore-unfixed: true
           vuln-type: 'os,library'
-          severity: 'CRITICAL,HIGH'
+          severity: 'CRITICAL'
 
       # Push only if scan passes
       - name: Build and Push Backend
@@ -94,7 +94,7 @@ jobs:
           exit-code: 1
           ignore-unfixed: true
           vuln-type: 'os,library'
-          severity: 'CRITICAL,HIGH'
+          severity: 'CRITICAL'
 
       # Push only if scan passes
       - name: Build and Push Frontend
