@@ -59,7 +59,6 @@ spec:
               echo "MySQL is up!";
 
           securityContext:
-            runAsNonRoot: true
             allowPrivilegeEscalation: false
 
       containers:
