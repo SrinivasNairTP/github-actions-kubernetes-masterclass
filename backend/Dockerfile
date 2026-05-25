@@ -18,6 +18,9 @@ WORKDIR /app
 COPY --from=builder /app/skillpulse .
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 
+# Run as non-root numeric user
+USER 1001
+
 EXPOSE 8080
 
 CMD ["./skillpulse"]
