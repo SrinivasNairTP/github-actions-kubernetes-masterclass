@@ -1,0 +1,25 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+
+metadata:
+  name: slack-test-alert
+  namespace: monitoring
+
+spec:
+  groups:
+    - name: slack-test-group
+
+      rules:
+        - alert: SlackTestAlert
+
+          expr: vector(1)
+
+          for: 1m
+
+          labels:
+            severity: warning
+
+          annotations:
+            summary: "SkillPulse Slack Alert Test"
+
+            description: "Slack alerting is successfully configured."
