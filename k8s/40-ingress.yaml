@@ -9,9 +9,7 @@ spec:
   ingressClassName: nginx
 
   rules:
-    # - host: skillpulse.local
-
-      http:
+    - http:
         paths:
           - path: /
             pathType: Prefix
