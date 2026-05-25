@@ -28,6 +28,26 @@ jobs:
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      # Build temporary image for scanning
+      - name: Build Backend Image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./backend
+          load: true
+          tags: skillpulse-backend:scan
+
+      # Trivy vulnerability scan
+      - name: Run Trivy Scan Backend
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: skillpulse-backend:scan
+          format: table
+          exit-code: 1
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
+
+      # Push only if scan passes
       - name: Build and Push Backend
         uses: docker/build-push-action@v5
         with:
@@ -57,6 +77,26 @@ jobs:
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v3
 
+      # Build temporary image for scanning
+      - name: Build Frontend Image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./frontend
+          load: true
+          tags: skillpulse-frontend:scan
+
+      # Trivy vulnerability scan
+      - name: Run Trivy Scan Frontend
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: skillpulse-frontend:scan
+          format: table
+          exit-code: 1
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
+
+      # Push only if scan passes
       - name: Build and Push Frontend
         uses: docker/build-push-action@v5
         with:
