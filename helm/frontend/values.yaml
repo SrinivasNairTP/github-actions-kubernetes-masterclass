@@ -1,8 +1,8 @@
 replicaCount: 1
 
 image:
-  repository: srini2390/skillpulse-frontend:2b19d0757dea624a5560ec7eb913e0d3d3e61447
-  tag: latest
+  repository: srini2390/skillpulse-frontend
+  tag: 2b19d0757dea624a5560ec7eb913e0d3d3e61447
   pullPolicy: Always
 
 service:
