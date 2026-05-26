@@ -1,0 +1,19 @@
+replicaCount: 1
+
+image:
+  repository: srini2390/skillpulse-backend
+  tag: latest
+  pullPolicy: Always
+
+service:
+  type: ClusterIP
+  port: 8080
+  targetPort: 8080
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+  limits:
+    memory: 256Mi
