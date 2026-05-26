@@ -1,0 +1,22 @@
+replicaCount: 1
+
+image:
+  repository: mysql
+  tag: "8.4"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 3306
+
+persistence:
+  enabled: true
+  size: 5Gi
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+
+  limits:
+    memory: 512Mi

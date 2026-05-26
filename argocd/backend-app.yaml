@@ -10,7 +10,7 @@ spec:
 
   source:
     repoURL: https://github.com/SrinivasNairTP/github-actions-kubernetes-masterclass.git
-    targetRevision: HEAD
+    targetRevision: main
     path: helm/backend
 
   destination:

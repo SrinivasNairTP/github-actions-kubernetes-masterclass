@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 
 metadata:
-  name: skillpulse
+  name: mysql
   namespace: argocd
 
 spec:
@@ -11,7 +11,7 @@ spec:
   source:
     repoURL: https://github.com/SrinivasNairTP/github-actions-kubernetes-masterclass.git
     targetRevision: main
-    path: k8s
+    path: helm/mysql
 
   destination:
     server: https://kubernetes.default.svc
@@ -21,6 +21,3 @@ spec:
     automated:
       prune: true
       selfHeal: true
-
-    syncOptions:
-      - CreateNamespace=true
