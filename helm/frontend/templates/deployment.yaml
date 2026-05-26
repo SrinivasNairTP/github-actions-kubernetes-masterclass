@@ -1,48 +1,32 @@
-apiVersion: apps/v1
-kind: Deployment
-
-metadata:
-  name: frontend
-
 spec:
-  replicas: {{ .Values.replicaCount }}
+  automountServiceAccountToken: false
 
-  selector:
-    matchLabels:
-      app: frontend
+  containers:
+    - name: frontend
 
-  template:
-    metadata:
-      labels:
-        app: frontend
+      image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
 
-    spec:
-      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1001
+        allowPrivilegeEscalation: false
 
-      containers:
-        - name: frontend
+      volumeMounts:
+        - name: nginx-cache
+          mountPath: /var/cache/nginx
 
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        - name: nginx-run
+          mountPath: /var/run
 
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+        - name: nginx-tmp
+          mountPath: /tmp
 
-          securityContext:
-            runAsNonRoot: true
-            runAsUser: 1001
-            allowPrivilegeEscalation: false
+  volumes:
+    - name: nginx-cache
+      emptyDir: {}
 
-          ports:
-            - containerPort: 8080
+    - name: nginx-run
+      emptyDir: {}
 
-          resources:
-            {{- toYaml .Values.resources | nindent 12 }}
-
-          livenessProbe:
-            httpGet:
-              path: /
-              port: 8080
-
-          readinessProbe:
-            httpGet:
-              path: /
-              port: 8080
+    - name: nginx-tmp
+      emptyDir: {}
