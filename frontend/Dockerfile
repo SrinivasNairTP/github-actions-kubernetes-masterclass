@@ -24,7 +24,7 @@ RUN mkdir -p /var/cache/nginx /var/run /var/log/nginx && \
     /etc/nginx/conf.d
 
 # Switch to non-root user
-USER appuser
+USER 1001
 
 EXPOSE 80
 
