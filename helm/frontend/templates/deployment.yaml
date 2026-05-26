@@ -1,32 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: frontend
+
 spec:
-  automountServiceAccountToken: false
+  replicas: {{ .Values.replicaCount }}
 
-  containers:
-    - name: frontend
+  selector:
+    matchLabels:
+      app: frontend
 
-      image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+  template:
+    metadata:
+      labels:
+        app: frontend
 
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 1001
-        allowPrivilegeEscalation: false
+    spec:
+      automountServiceAccountToken: false
 
-      volumeMounts:
+      containers:
+        - name: frontend
+
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1001
+            allowPrivilegeEscalation: false
+
+          ports:
+            - containerPort: 8080
+
+          volumeMounts:
+            - name: nginx-cache
+              mountPath: /var/cache/nginx
+
+            - name: nginx-run
+              mountPath: /var/run
+
+            - name: nginx-tmp
+              mountPath: /tmp
+
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+
+            initialDelaySeconds: 5
+            periodSeconds: 10
+
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+
+            initialDelaySeconds: 2
+            periodSeconds: 5
+
+      volumes:
         - name: nginx-cache
-          mountPath: /var/cache/nginx
+          emptyDir: {}
 
         - name: nginx-run
-          mountPath: /var/run
+          emptyDir: {}
 
         - name: nginx-tmp
-          mountPath: /tmp
-
-  volumes:
-    - name: nginx-cache
-      emptyDir: {}
-
-    - name: nginx-run
-      emptyDir: {}
-
-    - name: nginx-tmp
-      emptyDir: {}
+          emptyDir: {}
