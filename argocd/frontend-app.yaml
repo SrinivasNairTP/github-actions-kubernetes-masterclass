@@ -4,6 +4,10 @@ kind: Application
 metadata:
   name: frontend
   namespace: argocd
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: frontend=srini2390/skillpulse-frontend
+    argocd-image-updater.argoproj.io/frontend.update-strategy: newest-build
+    argocd-image-updater.argoproj.io/write-back-method: git
 
 spec:
   project: default
