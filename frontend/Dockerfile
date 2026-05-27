@@ -1,26 +1,20 @@
-FROM --platform=linux/amd64 node:20-alpine AS builder
-
-WORKDIR /app
-
-COPY frontend/package*.json ./
-
-RUN npm install
-
-COPY frontend/ .
-
-RUN npm run build
-
-
 FROM --platform=linux/amd64 nginx:1.27-alpine
 
+# Create non-root user and group
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 
+# Remove default nginx content
 RUN rm -rf /usr/share/nginx/html/*
 
-COPY --from=builder /app/build /usr/share/nginx/html
+# Copy frontend static files
+COPY index.html /usr/share/nginx/html/
+COPY css/ /usr/share/nginx/html/css/
+COPY js/ /usr/share/nginx/html/js/
 
-COPY frontend/nginx.conf /etc/nginx/conf.d/default.conf
+# Copy nginx configuration
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
+# Create required nginx directories and set permissions
 RUN mkdir -p /var/cache/nginx /var/run /var/log/nginx && \
     chown -R appuser:appgroup \
     /var/cache/nginx \
@@ -29,8 +23,11 @@ RUN mkdir -p /var/cache/nginx /var/run /var/log/nginx && \
     /usr/share/nginx/html \
     /etc/nginx/conf.d
 
+# Switch to non-root user
 USER 1001
 
+# Expose nginx port
 EXPOSE 80
 
+# Start nginx
 CMD ["nginx", "-g", "daemon off;"]
