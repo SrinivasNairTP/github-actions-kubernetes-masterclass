@@ -2,13 +2,13 @@ replicaCount: 1
 
 image:
   repository: srini2390/skillpulse-frontend
-  tag: "CURRENT_TAG"
+  tag: "d31f8052006a39e9f5894922d82c351ffe632fb1"
   pullPolicy: Always
 
 service:
   type: LoadBalancer
-  port: 8080
-  targetPort: 8080
+  port: 80
+  targetPort: 80
 
 resources:
   requests:
