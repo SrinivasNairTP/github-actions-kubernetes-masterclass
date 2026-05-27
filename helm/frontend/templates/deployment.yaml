@@ -32,7 +32,7 @@ spec:
             allowPrivilegeEscalation: false
 
           ports:
-            - containerPort: 80
+            - containerPort: 8080
 
           volumeMounts:
             - name: nginx-cache
