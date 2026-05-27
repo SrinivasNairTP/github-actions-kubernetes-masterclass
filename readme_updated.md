@@ -156,11 +156,11 @@ Validated:
 
 ## Application UI
 
-(Add Screenshot)
+![alt text](image-2.png)
 
 ## Grafana Monitoring
 
-
+![alt text](image-3.png)
 
 ---
 
