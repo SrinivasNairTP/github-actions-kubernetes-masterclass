@@ -57,6 +57,10 @@ jobs:
           tags: |
             srini2390/skillpulse-backend:latest
             srini2390/skillpulse-backend:${{ github.sha }}
+        
+      - name: Update Backend Helm Tag
+        run: |
+          sed -i "s/tag:.*/tag: \"${GITHUB_SHA}\"/" helm/backend/values.yaml
 
   frontend:
     runs-on: ubuntu-latest
@@ -106,3 +110,15 @@ jobs:
           tags: |
             srini2390/skillpulse-frontend:latest
             srini2390/skillpulse-frontend:${{ github.sha }}
+
+      - name: Update Frontend Helm Tag
+        run: |
+         sed -i "s/tag:.*/tag: \"${GITHUB_SHA}\"/" helm/frontend/values.yaml
+
+
+      - name: Commit Helm Changes
+        run: |
+          git config user.name "SrinivasNairTP"
+          git config user.email "srinivasnairtp@gmail.com"
+          git add helm/backend/values.yaml helm/frontend/values.yaml
+          git commit -m "Update Helm chart tags"
