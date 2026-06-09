@@ -4,7 +4,7 @@ kind: Deployment
 metadata:
   name: backend
   annotations:
-  argocd.argoprojct.io/sync-wave: "1"
+   argocd.argoprojct.io/sync-wave: "1"
 
 spec:
   replicas: {{ .Values.replicaCount }}
