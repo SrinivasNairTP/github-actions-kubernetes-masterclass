@@ -3,6 +3,8 @@ kind: Deployment
 
 metadata:
   name: mysql
+  annotations:
+   argocd.argoprojct.io/sync-wave: "0"
 
 spec:
   replicas: {{ .Values.replicaCount }}

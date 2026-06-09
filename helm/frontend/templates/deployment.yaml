@@ -3,6 +3,8 @@ kind: Deployment
 
 metadata:
   name: frontend
+  annotations:
+  argocd.argoprojct.io/sync-wave: "2"
 
 spec:
   replicas: {{ .Values.replicaCount }}

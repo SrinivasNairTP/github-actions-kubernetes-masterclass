@@ -20,23 +20,8 @@ The platform demonstrates production-style Kubernetes deployment practices using
 
 # Architecture
 
-```text
-Developer Push
-      ↓
-GitHub Repository
-      ↓
-GitHub Actions CI/CD
-      ↓
-DockerHub Image Registry
-      ↓
-Helm values.yaml Update
-      ↓
-ArgoCD GitOps Sync
-      ↓
-Google Kubernetes Engine (GKE)
-      ↓
-Frontend | Backend | MySQL
-```
+
+![alt text](image-4.png)
 
 ---
 
@@ -187,6 +172,31 @@ Validated:
 * Blue/Green Deployments
 
 ---
+
+## Troubleshooting Performed
+
+- Fixed nginx non-root container permission issues
+- Resolved Kubernetes service targetPort mismatches
+- Implemented immutable SHA image deployments
+- Corrected ArgoCD Helm synchronization issues
+- Debugged React static asset delivery through nginx
+- Fixed Helm templating issues for dynamic image updates
+
+## Security Features
+
+- Non-root container execution
+- Read-only filesystem support
+- Immutable image tagging
+- Kubernetes resource limits
+- GitOps-based deployment control
+
+## Git Push
+→ GitHub Actions Build
+→ DockerHub Push
+→ Helm values.yaml Update
+→ Git Commit Back to Repository
+→ ArgoCD Detects Drift
+→ Kubernetes Rolling Deployment
 
 # Author
 
