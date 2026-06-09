@@ -4,7 +4,7 @@ kind: Deployment
 metadata:
   name: mysql
   annotations:
-   argocd.argoprojct.io/sync-wave: "0"
+   argocd.argoproj.io/sync-wave: "0"
 
 spec:
   replicas: {{ .Values.replicaCount }}
